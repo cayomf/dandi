@@ -6,7 +6,6 @@ import { EyeIcon, EyeSlashIcon, ClipboardDocumentIcon, PencilSquareIcon, TrashIc
 import { customToast } from '../../utils/toast';
 import Modal from '../../components/Modal';
 import EditModal from '../components/EditModal';
-import { useRouter } from 'next/navigation';  // Adicione esta importação
 
 interface ApiKey {
   id: string;
