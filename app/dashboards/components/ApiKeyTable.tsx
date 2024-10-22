@@ -17,7 +17,6 @@ interface ApiKey {
 }
 
 export default function ApiKeyTable() {
-  const router = useRouter();  // Adicione esta linha
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [newKeyName, setNewKeyName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);

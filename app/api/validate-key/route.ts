@@ -6,7 +6,7 @@ export async function POST(request: Request) {
     const { apiKey } = await request.json();
     console.log('Chave API recebida:', apiKey);
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('api_keys')
       .select('*')
       .eq('value', apiKey)
