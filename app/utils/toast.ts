@@ -1,6 +1,6 @@
 import React from 'react';
 import toast, { ToastOptions } from 'react-hot-toast';
-import { CheckIcon, ClipboardDocumentCheckIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { CheckIcon, ClipboardDocumentCheckIcon, PencilIcon, TrashIcon, XCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 import { ComponentType } from 'react';
 
 type IconType = ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -10,9 +10,12 @@ const styles: Record<string, { background: string; icon: IconType }> = {
   copy: { background: '#3b82f6', icon: ClipboardDocumentCheckIcon },
   edit: { background: '#eab308', icon: PencilIcon },
   delete: { background: '#ef4444', icon: TrashIcon },
+  error: { background: '#ef4444', icon: XCircleIcon },
+  warning: { background: '#f97316', icon: ExclamationTriangleIcon },
+  success: { background: '#22c55e', icon: CheckIcon },
 };
 
-export const customToast = (message: string, type: 'create' | 'copy' | 'edit' | 'delete'): void => {
+export const customToast = (message: string, type: 'error' | 'create' | 'copy' | 'edit' | 'delete' | 'success' | 'warning') => {
   const IconComponent = styles[type].icon;
   const toastOptions: ToastOptions = {
     icon: React.createElement(IconComponent, { className: "w-6 h-6" }),

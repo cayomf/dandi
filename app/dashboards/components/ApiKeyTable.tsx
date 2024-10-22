@@ -6,6 +6,7 @@ import { EyeIcon, EyeSlashIcon, ClipboardDocumentIcon, PencilSquareIcon, TrashIc
 import { customToast } from '../../utils/toast';
 import Modal from '../../components/Modal';
 import EditModal from '../components/EditModal';
+import { useRouter } from 'next/navigation';  // Adicione esta importação
 
 interface ApiKey {
   id: string;
@@ -16,6 +17,7 @@ interface ApiKey {
 }
 
 export default function ApiKeyTable() {
+  const router = useRouter();  // Adicione esta linha
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [newKeyName, setNewKeyName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,20 +53,46 @@ export default function ApiKeyTable() {
         value: `dandi-${Math.random().toString(36).substr(2, 9)}`,
       };
 
-      const { data, error } = await supabase
-        .from('api_keys')
-        .insert([newKey])
-        .select();
+      try {
+        console.log('Validando nova chave:', newKey.value);
+        const response = await fetch('/api/validate-key', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ apiKey: newKey.value }),
+        });
 
-      if (error) {
+        const data = await response.json();
+        console.log('Resposta da validação:', response.status, data);
+
+        if (!data.valid) {
+          // Chave não existe, podemos criar
+          console.log('Criando nova chave');
+          const { data: insertedData, error } = await supabase
+            .from('api_keys')
+            .insert([newKey])
+            .select();
+
+          if (error) {
+            console.error('Erro ao inserir nova chave:', error);
+            throw new Error('Falha ao criar nova chave API');
+          } else if (insertedData) {
+            console.log('Nova chave criada com sucesso:', insertedData);
+            setApiKeys([...apiKeys, insertedData[0]]);
+            setNewKeyName('');
+            setNewKeyLimit('1000');
+            setIsModalOpen(false);
+            customToast('Nova chave API criada com sucesso', 'create');
+          }
+        } else {
+          // Chave já existe
+          customToast('Esta chave API já existe', 'warning');
+        }
+      } catch (error) {
         console.error('Erro ao criar chave:', error);
-        customToast('Erro ao criar nova chave API', 'delete');
-      } else if (data) {
-        setApiKeys([...apiKeys, data[0]]);
-        setNewKeyName('');
-        setNewKeyLimit('1000');
-        setIsModalOpen(false);
-        customToast('Nova chave API criada com sucesso', 'create');
+        customToast(
+          error instanceof Error ? error.message : 'Erro ao criar nova chave API',
+          'error'
+        );
       }
     }
   };

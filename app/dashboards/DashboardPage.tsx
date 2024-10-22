@@ -1,12 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import PlanOverview from './components/PlanOverview';
 import ApiKeyTable from './components/ApiKeyTable';
 import { Toaster } from 'react-hot-toast';
 
 export default function DashboardPage() {
+  useEffect(() => {
+    console.log('DashboardPage montado');
+  }, []);
+
   return (
     <div className="flex">
       <Sidebar />
