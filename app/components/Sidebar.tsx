@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { HomeIcon, BeakerIcon, DocumentTextIcon, CodeBracketIcon, ReceiptPercentIcon, BookOpenIcon, RocketLaunchIcon, UserCircleIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, CodeBracketIcon, RocketLaunchIcon, UserCircleIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
 
 const menuItems = [
   { name: 'Visão Geral', icon: HomeIcon, href: '/dashboards', external: false },
