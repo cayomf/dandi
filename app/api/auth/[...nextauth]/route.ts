@@ -49,7 +49,8 @@ const handler = NextAuth({
         return false
       }
     },
-    async redirect({ baseUrl }) {
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith(baseUrl)) return url
       return `${baseUrl}/dashboards`
     }
   },
@@ -57,8 +58,7 @@ const handler = NextAuth({
     signIn: '/',
     error: '/auth/error',
     signOut: '/'
-  },
-  secret: process.env.NEXTAUTH_SECRET
+  }
 })
 
 export { handler as GET, handler as POST }
