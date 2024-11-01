@@ -49,11 +49,13 @@ const handler = NextAuth({
         return false
       }
     },
-    async redirect({ baseUrl }) {
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith(baseUrl)) return url
       return `${baseUrl}/dashboards`
     }
   },
   pages: {
+    signIn: '/',
     error: '/auth/error'
   }
 })
