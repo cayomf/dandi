@@ -10,8 +10,8 @@ export default function Home() {
   const handleSignIn = async () => {
     try {
       await signIn('google', {
-        callbackUrl: '/dashboards',
-        redirect: true
+        redirect: true,
+        callbackUrl: '/dashboards'
       })
     } catch (error) {
       console.error('Erro ao fazer login:', error)
