@@ -3,9 +3,26 @@ import React from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react"
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
   const { data: session } = useSession()
+  const router = useRouter()
+
+  const handleSignIn = async () => {
+    try {
+      await signIn('google', {
+        callbackUrl: '/dashboards',
+        redirect: true
+      })
+    } catch (error) {
+      console.error('Erro ao fazer login:', error)
+    }
+  }
+
+  const handleManageKeys = () => {
+    router.push('/dashboards')
+  }
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -67,12 +84,12 @@ export default function Home() {
             Read our docs
           </a>
           {session && (
-            <Link
-              href="/dashboards"
+            <button
+              onClick={handleManageKeys}
               className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44 text-black dark:text-white"
             >
               Gerenciar Chaves de API
-            </Link>
+            </button>
           )}
           {session ? (
             <button
@@ -83,7 +100,7 @@ export default function Home() {
             </button>
           ) : (
             <button
-              onClick={() => signIn('google', { callbackUrl: '/dashboards' })}
+              onClick={handleSignIn}
               className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
             >
               Entrar com Google

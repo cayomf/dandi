@@ -50,14 +50,15 @@ const handler = NextAuth({
       }
     },
     async redirect({ url, baseUrl }) {
-      if (url.startsWith(baseUrl)) return url
       return `${baseUrl}/dashboards`
     }
   },
   pages: {
     signIn: '/',
-    error: '/auth/error'
-  }
+    error: '/auth/error',
+    signOut: '/'
+  },
+  secret: process.env.NEXTAUTH_SECRET
 })
 
 export { handler as GET, handler as POST }
