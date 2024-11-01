@@ -50,8 +50,13 @@ const handler = NextAuth({
       }
     },
     async redirect({ url, baseUrl }) {
-      if (url.startsWith(baseUrl)) return url
-      return `${baseUrl}/dashboards`
+      if (url.startsWith(baseUrl)) {
+        const path = url.substring(baseUrl.length)
+        if (path.startsWith('/dashboards')) {
+          return url
+        }
+      }
+      return new URL('/dashboards', baseUrl).toString()
     }
   },
   pages: {

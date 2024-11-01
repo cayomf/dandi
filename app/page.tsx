@@ -2,11 +2,10 @@
 import React from 'react';
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react"
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function Home() {
   const { data: session } = useSession()
-  const router = useRouter()
 
   const handleSignIn = async () => {
     try {
@@ -20,7 +19,7 @@ export default function Home() {
   }
 
   const handleManageKeys = () => {
-    router.push('/dashboards')
+    // router.push('/dashboards')
   }
 
   return (
@@ -83,12 +82,12 @@ export default function Home() {
             Read our docs
           </a>
           {session && (
-            <button
-              onClick={handleManageKeys}
+            <Link
+              href="/dashboards"
               className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44 text-black dark:text-white"
             >
               Gerenciar Chaves de API
-            </button>
+            </Link>
           )}
           {session ? (
             <button
